@@ -1,0 +1,30 @@
+<form *ngIf="latest$ | async as latest" [formGroup]="form">
+  <div class="container">
+    <div *ngFor="let config of configs">
+      <h4>{{config.title}}</h4>
+      <mat-form-field appearance="fill">
+        <mat-label>{{config.lable}}</mat-label>
+        <mat-select *ngIf="config.type === 'select'" [formControl]="config.formControl">
+          <mat-option>None</mat-option>
+          <mat-option *ngFor="let currency of latest" [value]="currency">
+            {{currency}}
+          </mat-option>
+        </mat-select>
+         <input *ngIf="config.type === 'input'"  matInput [formControl]="config.formControl">
+      </mat-form-field>
+    </div>
+    <button [disabled]="form.invalid" (click)="convert()" mat-raised-button color="primary">Convert</button>
+  </div>
+</form>
+
+
+<div class="container">
+  <div *ngIf="result$ | async as res else noRes">
+    <p>you conversion result:</p>
+    <h1>{{res}}</h1>
+  </div>
+  <ng-template #noRes>
+  <h2>Fill Out the form to get a currency conversion.</h2>
+</ng-template>
+
+</div>
